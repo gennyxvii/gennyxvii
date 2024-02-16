@@ -1,0 +1,44 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+// Struttura per rappresentare una squadra
+struct Squadra {
+    string nome;
+    int forza; // Livello di forza della squadra
+};
+
+// Funzione per generare un pronostico basato sulla forza relativa delle squadre
+string generaPronostico(const Squadra& squadraCasa, const Squadra& squadraOspite) {
+    int differenzaForza = squadraCasa.forza - squadraOspite.forza;
+    int probabilitaVittoriaCasa = 50 + differenzaForza * 5; // Maggiore è la differenza di forza, maggiore è la probabilità di vittoria per la squadra più forte
+    int probabilitaPareggio = 30 - abs(differenzaForza); // La probabilità di pareggio diminuisce all'aumentare della differenza di forza
+    int risultato = rand() % 100; // Genera un numero casuale tra 0 e 99
+
+    if (risultato < probabilitaVittoriaCasa)
+        return "Vittoria della squadra di casa";
+    else if (risultato < probabilitaVittoriaCasa + probabilitaPareggio)
+        return "Pareggio";
+    else
+        return "Vittoria della squadra ospite";
+}
+
+int main() {
+    srand(time(0)); // Imposta il seed per la generazione casuale
+
+    // Definizione delle squadre
+    Squadra squadraCasa = {"Squadra A", 80}; // Esempio: forza 80
+    Squadra squadraOspite = {"Squadra B", 75}; // Esempio: forza 75
+
+    // Genera un pronostico
+    string pronostico = generaPronostico(squadraCasa, squadraOspite);
+
+    // Stampa il pronostico
+    cout << "Pronostico per la partita tra " << squadraCasa.nome << " e " << squadraOspite.nome << ": " << pronostico << endl;
+
+    return 0;
+}
